@@ -1,2 +1,11 @@
+.svn/
+.git/
+.metadata/
+.settings/
+.svn/
+Debug/
+__pycache__/
 bin/
+build/
+ipch/
 obj/
