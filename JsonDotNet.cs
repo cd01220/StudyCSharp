@@ -9,12 +9,22 @@
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// the JsonDotNet class.
     /// </summary>
     public class JsonDotNet
     {
+        /// <summary>
+        /// Serialization Error Handling
+        /// </summary>
+        public static void TestJson()
+        {
+            List<int> l = new List<int> { 1, 2 };
+            Console.WriteLine(string.Join(", ", l));
+        }
+
         /// <summary>
         /// to test JsonConvert class.
         /// For simple scenarios where you want to convert to and from a JSON string, the SerializeObject() 
@@ -28,9 +38,8 @@
             }";
 
             Student student = JsonConvert.DeserializeObject<Student>(json);
-
-            string jsonString = JsonConvert.SerializeObject(student);
-            Console.WriteLine(jsonString);
+            student.Roles = new List<string>();
+            Console.WriteLine(JsonConvert.SerializeObject(student));
         }
 
         /// <summary>
@@ -40,6 +49,7 @@
         {
             List<string> errors = new List<string>();
 
+            // Error Event
             List<DateTime> dates = JsonConvert.DeserializeObject<List<DateTime>>(
             @"[
                 '2009-09-09T00:00:00Z',
@@ -59,11 +69,9 @@
                 Converters = { new IsoDateTimeConverter() }
             });
 
-            foreach (var date in dates)
-            {
-                Console.WriteLine(date);
-            }
+            Console.WriteLine(string.Join(", ", dates));
 
+            // OnErrorAttribute
             Student student = new Student
             {
                 Name = "George Michael Bluth",
