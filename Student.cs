@@ -9,12 +9,18 @@
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// the entity class Student.
     /// </summary>
     public class Student
     {
+        /// <summary>
+        /// the person's roles
+        /// </summary>
+        private List<string> roles;
+
         /// <summary>
         /// keep the additional data.
         /// </summary>
@@ -30,16 +36,36 @@
         }
 
         /// <summary>
-        /// normal deserialization
-        /// Gets or sets the DisplayName of the student.
+        /// Gets or sets the Name of the student.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the Domain of the student.
         /// </summary>
         [JsonIgnore]
         public string Domain { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Roles of the student.
+        /// </summary>
+        public List<string> Roles
+        {
+            get
+            {
+                if (this.roles == null)
+                {
+                    throw new Exception("Roles not loaded!");
+                }
+
+                return this.roles;
+            }
+
+            set 
+            {
+                this.roles = value; 
+            }
+        }
 
         /// <summary>
         /// Gets or sets the UserName of the student.
@@ -62,6 +88,17 @@
             string[] samAccountDic = samAccountName.Split('\\');
             this.Domain = samAccountDic[0];
             this.UserName = samAccountDic[1];
+        }
+
+        /// <summary>
+        /// the OnError method.
+        /// </summary>
+        /// <param name="context">the context</param>
+        /// /// <param name="errorContext">the errorContext</param>
+        [OnError]
+        private void OnError(StreamingContext context, ErrorContext errorContext)
+        {
+            errorContext.Handled = true;
         }
     }
 }

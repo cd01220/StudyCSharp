@@ -18,7 +18,7 @@
         /// <param name="args">the args</param>
         private static void Main(string[] args)
         {
-            JsonDotNet.TestJson01();
+            JsonDotNet.TestJson02();
         }        
     }    
 }
