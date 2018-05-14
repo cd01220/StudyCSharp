@@ -1,7 +1,9 @@
 <StyleCopSettings Version="105">
   <GlobalSettings>
     <CollectionProperty Name="RecognizedWords">
+      <Value>htm</Value>
       <Value>json</Value>
+      <Value>newtonsoft</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>
