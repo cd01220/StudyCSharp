@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -19,10 +18,7 @@
         /// <param name="args">the args</param>
         private static void Main(string[] args)
         {
-            Trace.WriteLine("Entering Main");
-            JsonDotNet.TestJson();
-            Trace.WriteLine("Exiting Main");
-        }       
-        
+            DiagnosticPractices.TestDiagnostic();
+        } 
     }    
 }
