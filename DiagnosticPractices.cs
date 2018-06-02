@@ -27,7 +27,7 @@
         /// </summary>
         public static void TestDiagnostic()
         {
-            TestDiagnostic05();
+            TestDiagnostic07();
         }
 
         /// <summary>
@@ -41,6 +41,7 @@
 
         /// <summary>
         /// Write log into Windows event logs.
+        /// the following code was copied from:
         /// https://msdn.microsoft.com/zh-cn/library/system.diagnostics.eventlog(v=vs.110).aspx
         /// </summary>
         public static void TestDiagnostic02()
@@ -63,7 +64,6 @@
             using (EventLog myLog = new EventLog("MyNewLog", ".", "MySource"))
             {
                 myLog.WriteEntry("Writing to event log.");
-                myLog.Dispose();
             }
             
             Console.WriteLine(string.Empty);
@@ -71,6 +71,7 @@
 
         /// <summary>
         /// EventSource example 01.
+        /// the following code was copied from:
         /// https://msdn.microsoft.com/zh-cn/library/system.diagnostics.tracing.eventsource(v=vs.110).aspx
         /// </summary>
         public static void TestDiagnostic03()
@@ -97,6 +98,7 @@
 
         /// <summary>
         /// EventSource example 02.
+        /// the following code was copied from:
         /// https://msdn.microsoft.com/zh-cn/library/system.diagnostics.tracing.eventsource(v=vs.110).aspx
         /// </summary>
         public static void TestDiagnostic04()
@@ -133,22 +135,22 @@
             public static MyCompanyEventSource02 Log = new MyCompanyEventSource02();
 
             [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed.")]
-            [Event(1, Message = "Application Failure: {0}", Level = EventLevel.Error, Keywords = Keywords.Diagnostic)]
+            [Event(1, Message = "Application Failure: {0}", Channel = EventChannel.Admin, Keywords = Keywords.Diagnostic, Level = EventLevel.Error)]
             public void Failure(string message)
             {
                 this.WriteEvent(1, message);
             }
 
             [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed.")]
-            [Event(2, Message = "Starting up.", Keywords = Keywords.Perf, Level = EventLevel.Informational)]
+            [Event(2, Message = "Starting up.", Channel = EventChannel.Admin, Keywords = Keywords.Perf, Level = EventLevel.Informational)]
             public void Startup()
             {
                 this.WriteEvent(2);
             }
 
             [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed.")]
-            [Event(3, Message = "loading page {1} activityID={0}", Opcode = EventOpcode.Start,
-                Task = Tasks.Page, Keywords = Keywords.Page, Level = EventLevel.Informational)]
+            [Event(3, Message = "loading page {1} activityID={0}", Channel = EventChannel.Admin, Keywords = Keywords.Page, Level = EventLevel.Informational,
+                Opcode = EventOpcode.Start, Task = Tasks.Page)]
             public void PageStart(int id, string url)
             {
                 if (this.IsEnabled())
@@ -158,7 +160,8 @@
             }
 
             [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed.")]
-            [Event(4, Opcode = EventOpcode.Stop, Task = Tasks.Page, Keywords = Keywords.Page, Level = EventLevel.Informational)]
+            [Event(4, Message = "activityID={0}", Channel = EventChannel.Admin, Keywords = Keywords.Page, Level = EventLevel.Informational, 
+                Opcode = EventOpcode.Stop, Task = Tasks.Page)]
             public void PageStop(int id)
             {
                 if (this.IsEnabled())
@@ -216,10 +219,33 @@
         }
 
         /// <summary>
-        /// DefaultTraceListener Class.
-        /// https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.defaulttracelistener?view=netframework-4.6.1
+        /// Study EventListener class.
+        /// https://msdn.microsoft.com/zh-cn/library/system.diagnostics.tracing.eventlistener(v=vs.110).aspx
         /// </summary>
         public static void TestDiagnostic05()
+        {
+            EventListener verboseListener = new ConsoleEventListener();
+            verboseListener.EnableEvents(MyCompanyEventSource01.Log, EventLevel.Verbose); 
+
+            TestDiagnostic03();
+
+            verboseListener.Dispose();
+        }
+
+        sealed class ConsoleEventListener : EventListener
+        {
+            protected override void OnEventWritten(EventWrittenEventArgs eventData)
+            {
+                Console.WriteLine(eventData.EventName);
+            }
+        }
+
+        /// <summary>
+        /// DefaultTraceListener Class.
+        /// the following code was copied from:
+        /// https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.defaulttracelistener?view=netframework-4.6.1
+        /// </summary>
+        public static void TestDiagnostic06()
         {
             decimal possibilities;
             decimal iter;
@@ -235,7 +261,7 @@
             // Assign the log file specification from the command line, if entered.
             defaultListener.LogFileName = "LogFile.txt";
 
-            possibilities = 100;
+            possibilities = 10;
             try
             {
                 const decimal MAX_POSSIBILITIES = 99;
@@ -288,6 +314,9 @@
             Debugger.Break();
         }
 
+        /// <summary>
+        /// the CalcBinomial class. 
+        /// </summary>
         public static decimal CalcBinomial(decimal possibilities, decimal outcomes)
         {
 
@@ -300,6 +329,22 @@
                 result /= iter;
             }
             return result;
+        }
+
+        /// <summary>
+        /// How to: Use TraceSource and Filters with Trace Listeners
+        /// https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/how-to-use-tracesource-and-filters-with-trace-listeners
+        /// </summary>
+        public static void TestDiagnostic07()
+        {
+            TraceSource mySource = new TraceSource("TraceSourceApp");
+
+            mySource.TraceEvent(TraceEventType.Error, 1, "Error message.");
+            mySource.TraceEvent(TraceEventType.Warning, 2, "Warning message.");
+
+            mySource.Close();  
+
+            Debugger.Break();
         }
     }
 }

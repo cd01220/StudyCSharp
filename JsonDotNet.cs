@@ -13,6 +13,7 @@
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json.Schema;
     using Newtonsoft.Json.Serialization;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// the JsonDotNet class.
@@ -135,6 +136,7 @@
 
             string json2 = @"{'Name':'Mike'}";
             var customer2 = JsonConvert.DeserializeAnonymousType(json2, definition);
+            Contract.Assume(customer2 != null);
             Console.WriteLine(customer2.Name);
         }
 
@@ -250,7 +252,7 @@
             /// keep the additional data.
             /// </summary>
             [JsonExtensionData]
-            private IDictionary<string, JToken> additionalData;
+            private readonly IDictionary<string, JToken> additionalData;
 
             /// <summary>
             /// Initializes a new instance of the Student class.
@@ -278,11 +280,9 @@
             {
                 get
                 {
-                    if (this.roles == null)
-                    {
-                        throw new Exception("Roles not loaded!");
-                    }
-
+                    Contract.Ensures(Contract.Result<System.Collections.Generic.List<System.String>>() != null);
+                    
+                    Contract.Assume(this.roles != null);
                     return this.roles;
                 }
 
@@ -312,6 +312,7 @@
 
                 string[] samAccountDic = samAccountName.Split('\\');
                 this.Domain = samAccountDic[0];
+                Contract.Assume(samAccountDic.Length > 2);
                 this.UserName = samAccountDic[1];
             }
 
@@ -323,6 +324,7 @@
             [OnError]
             private void OnError(StreamingContext context, ErrorContext errorContext)
             {
+                Contract.Requires(errorContext != null);
                 errorContext.Handled = true;
             }
         }
