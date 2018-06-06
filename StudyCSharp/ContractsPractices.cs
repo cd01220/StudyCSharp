@@ -15,7 +15,7 @@ namespace StudyCSharp
 
         /// <summary>
         /// Example of CodeContractsHelpers.ThrowIfReached.
-        /// /// the following code was copied from:
+        /// the following code was copied from:
         /// https://blogs.msdn.microsoft.com/francesco/2014/09/12/how-to-use-cccheck-to-prove-no-case-is-forgotten/
         /// </summary>
         public static CookPasta Next(CookPasta state)

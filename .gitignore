@@ -4,12 +4,14 @@
 .metadata/
 .settings/
 .svn/
+.vs/
 Debug/
 __pycache__/
 bin/
 build/
 ipch/
 obj/
+packages/
 
 #file
 *-odb.cpp

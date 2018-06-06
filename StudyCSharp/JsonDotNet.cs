@@ -1,19 +1,15 @@
 ﻿namespace StudyCSharp
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json.Schema;
     using Newtonsoft.Json.Serialization;
+
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// the JsonDotNet class.
@@ -158,7 +154,7 @@
 
             Console.WriteLine(person.GetType().Name); // Employee
             Employee employee = (Employee)person;
-            
+
             Console.WriteLine(string.Empty);
         }
 
@@ -166,7 +162,7 @@
         /// PreserveReferencesHandling setting.
         /// https://www.newtonsoft.com/json/help/html/PreserveReferencesHandlingObject.htm
         /// </summary>
-        public static void TestJson06() 
+        public static void TestJson06()
         {
             Directory root = new Directory { Name = "Root" };
             Directory documents = new Directory { Name = "My Documents", Parent = root };
@@ -244,15 +240,15 @@
         public class Student
         {
             /// <summary>
-            /// the person's roles
-            /// </summary>
-            private List<string> roles;
-
-            /// <summary>
             /// keep the additional data.
             /// </summary>
             [JsonExtensionData]
             private readonly IDictionary<string, JToken> additionalData;
+
+            /// <summary>
+            /// the person's roles
+            /// </summary>
+            private List<string> roles;
 
             /// <summary>
             /// Initializes a new instance of the Student class.
@@ -280,8 +276,8 @@
             {
                 get
                 {
-                    Contract.Ensures(Contract.Result<System.Collections.Generic.List<System.String>>() != null);
-                    
+                    Contract.Ensures(Contract.Result<System.Collections.Generic.List<string>>() != null);
+
                     Contract.Assume(this.roles != null);
                     return this.roles;
                 }
@@ -391,7 +387,7 @@
             /// Gets or sets the Department of the Directory.
             /// </summary>
             public string Name { get; set; }
-            
+
             /// <summary>
             /// Gets or sets the Parent of the Directory.
             /// </summary>
