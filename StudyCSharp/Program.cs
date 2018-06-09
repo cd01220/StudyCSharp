@@ -1,13 +1,14 @@
 ﻿namespace StudyCSharp
 {
     using System.Diagnostics;
+    using System.Threading;
 
     public class Program
     {
         static void Main(string[] args)
         {
-            DiagnosticPractices.TestDiagnostic();
-            Debugger.Break();
+            //JsonDotNet.TestJson();
+            WebClient.TestWebClient();
         }
     }
 }

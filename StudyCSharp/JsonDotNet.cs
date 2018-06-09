@@ -8,6 +8,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Runtime.Serialization;
 
@@ -21,7 +22,7 @@
         /// </summary>
         public static void TestJson()
         {
-            TestJson06();
+            TestJson07();
         }
 
         /// <summary>
@@ -414,5 +415,24 @@
             /// </summary>
             public Directory Parent { get; set; }
         }
-    }
+
+        /// <summary>
+        /// 学习 Timestamp => Datatime 的转换
+        /// </summary>
+        public static void TestJson07() 
+        {
+            string json = @"{
+                    'FirstName': 'John',
+                    'LastName': 'Joinery',
+                    'BirthDate': '1234656000'
+                }";
+
+            var settings = new UnixSecondsConverter();
+            Person person = JsonConvert.DeserializeObject<Person>(json, settings);
+
+            Console.WriteLine(person.BirthDate);
+        }       
+    } //public class JsonDotNet
+
+    
 }
