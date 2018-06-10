@@ -7,8 +7,8 @@
     {
         static void Main(string[] args)
         {
-            JsonDotNet.TestJson();
-            //WebClient.TestWebClient();
+            //JsonDotNet.TestJson();
+            WebClient.TestWebClient();
         }
     }
 }

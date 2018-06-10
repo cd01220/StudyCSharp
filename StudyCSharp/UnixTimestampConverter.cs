@@ -7,6 +7,8 @@
 
     public class UnixSecondsConverter : DateTimeConverterBase
     {
+        private static readonly UnixSecondsConverter instance = new UnixSecondsConverter();
+
         private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -22,6 +24,8 @@
 
             return UnixDateTimeHelper.UnixSecondsToDateTime((string)reader.Value);
         }
+
+        public static UnixSecondsConverter Instance { get { return instance;} }
     }
 
     ///<summary>

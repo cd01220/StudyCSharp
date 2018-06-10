@@ -258,43 +258,6 @@
 
             Console.WriteLine(string.Empty);
         }
-        
-        /// <summary>
-        /// the Person class.
-        /// </summary>
-        public class Person
-        {
-            /// <summary>
-            /// Gets or sets the FirstName of the Person.
-            /// </summary>
-            public string FirstName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the LastName of the Person.
-            /// </summary>
-            public string LastName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the BirthDate of the Person.
-            /// </summary>
-            public DateTime BirthDate { get; set; }
-        }
-
-        /// <summary>
-        /// the Employee class.
-        /// </summary>
-        public class Employee : Person
-        {
-            /// <summary>
-            /// Gets or sets the Department of the Employee.
-            /// </summary>
-            public string Department { get; set; }
-
-            /// <summary>
-            /// Gets or sets the JobTitle of the Employee.
-            /// </summary>
-            public string JobTitle { get; set; }
-        }
 
         /// <summary>
         /// the PersonConverter class.
@@ -388,44 +351,7 @@
             // }
             Console.WriteLine(string.Empty);
         }
-
-        /// <summary>
-        /// the Directory class.
-        /// </summary>
-        public class Directory
-        {
-            /// <summary>
-            /// Gets or sets the Department of the Directory.
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Parent of the Directory.
-            /// </summary>
-            public Directory Parent { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Files of the Directory.
-            /// </summary>
-            public IList<File> Files { get; set; }
-        }
-
-        /// <summary>
-        /// the File class.
-        /// </summary>
-        public class File
-        {
-            /// <summary>
-            /// Gets or sets the Name of the File.
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Parent of the File.
-            /// </summary>
-            public Directory Parent { get; set; }
-        }
-
+        
         /// <summary>
         /// 学习 Timestamp => Datatime 的转换
         /// </summary>
@@ -437,8 +363,7 @@
                     'BirthDate': '1234656000'
                 }";
 
-            var dateTimeonverter = new UnixSecondsConverter();
-            Person person = JsonConvert.DeserializeObject<Person>(json, dateTimeonverter);
+            Person person = JsonConvert.DeserializeObject<Person>(json, UnixSecondsConverter.Instance);
 
             Console.WriteLine(person.BirthDate);
         }
@@ -471,45 +396,12 @@
             {
                 Converters = new List<JsonConverter>
                 {
-                    new UnixSecondsConverter()
+                    UnixSecondsConverter.Instance
                 }
             };
 
-            TickerBase tickerBase = JsonConvert.DeserializeObject<TickerBase>(json, settings);
-            Console.WriteLine(JsonConvert.SerializeObject(tickerBase, Formatting.Indented, settings));
-        }
-
-        public class TickerBase
-        {
-            [JsonProperty(PropertyName = "date")]
-            public DateTime Date { get; set; }
-
-            [JsonProperty(PropertyName = "ticker")]
-            public TickerDetail Ticker { get; set; }
-        }
-
-        public class TickerDetail
-        {
-            [JsonProperty(PropertyName = "contract_id")]
-            public long ContractCid { get; set; }
-
-            [JsonProperty(PropertyName = "high")]
-            public decimal High { get; set; }
-
-            [JsonProperty(PropertyName = "low")]
-            public decimal Low { get; set; }
-
-            [JsonProperty(PropertyName = "vol")]
-            public decimal Vol { get; set; }
-
-            [JsonProperty(PropertyName = "last")]
-            public decimal Last { get; set; }
-
-            [JsonProperty(PropertyName = "buy")]
-            public decimal Buy { get; set; }
-
-            [JsonProperty(PropertyName = "sell")]
-            public decimal Sell { get; set; }
-        }
+            TickerContainer tickerContainer = JsonConvert.DeserializeObject<TickerContainer>(json, settings);
+            Console.WriteLine(JsonConvert.SerializeObject(tickerContainer, Formatting.Indented, settings));
+        }        
     } //public class JsonDotNet
 }

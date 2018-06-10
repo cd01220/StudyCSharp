@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="DiagnosticPractices.cs" />
     <Compile Include="JsonDotNet.cs" />
+    <Compile Include="Models.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskBasedAsynchronousPattern.cs" />
