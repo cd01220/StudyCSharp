@@ -9,7 +9,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Diagnostics.Contracts;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -22,7 +21,10 @@
         /// </summary>
         public static void TestJson()
         {
+            TestJson02();
+            TestJson06();
             TestJson07();
+            TestJson08();
         }
 
         /// <summary>
@@ -80,6 +82,105 @@
 
             string json = JsonConvert.SerializeObject(student, Formatting.Indented);
             Console.WriteLine(json);
+
+            json = @"{
+              'Name': 'John Smith',
+              'SamAccountName': 'contoso\\johns'
+             }";
+             student = JsonConvert.DeserializeObject<Student>(json);
+             Console.WriteLine(JsonConvert.SerializeObject(student, Formatting.Indented));
+        }
+
+        /// <summary>
+        /// the entity class Student.
+        /// </summary>
+        public class Student
+        {
+            /// <summary>
+            /// keep the additional data.
+            /// </summary>
+            [JsonExtensionData]
+            private readonly IDictionary<string, JToken> additionalData;
+
+            /// <summary>
+            /// the person's roles
+            /// </summary>
+            private List<string> roles;
+
+            /// <summary>
+            /// Initializes a new instance of the Student class.
+            /// </summary>
+            public Student()
+            {
+                this.additionalData = new Dictionary<string, JToken>();
+            }
+
+            /// <summary>
+            /// Gets or sets the Name of the student.
+            /// </summary>
+            public string Name { get; set; }
+
+            /// <summary>
+            /// Gets or sets the Domain of the student.
+            /// </summary>
+            [JsonIgnore]
+            public string Domain { get; set; }
+
+            /// <summary>
+            /// Gets or sets the Roles of the student.
+            /// </summary>
+            public List<string> Roles
+            {
+                get
+                {
+                    return this.roles;
+                }
+
+                set
+                {
+                    this.roles = value;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the UserName of the student.
+            /// these properties are set in OnDeserialized
+            /// </summary>
+            [JsonIgnore]
+            public string UserName { get; set; }
+
+            /// <summary>
+            /// the OnDeserialized method.
+            /// Example:
+            /// string json = @"{
+            ///  'Name': 'John Smith',
+            ///  'SAMAccountName': 'contoso\\johns'
+            /// }";
+            /// var student = JsonConvert.DeserializeObject<Student>(json);
+            /// </summary>
+            /// <param name="context">the context</param>
+            [OnDeserialized]
+            private void OnDeserialized(StreamingContext context)
+            {
+                // SAMAccountName is not deserialized to any property
+                // and so it is added to the extension data dictionary
+                string samAccountName = (string)this.additionalData["SamAccountName"];
+
+                string[] samAccountDic = samAccountName.Split('\\');
+                this.Domain = samAccountDic[0];
+                this.UserName = samAccountDic[1];
+            }
+
+            /// <summary>
+            /// the OnError method.
+            /// </summary>
+            /// <param name="context">the context</param>
+            /// /// <param name="errorContext">the errorContext</param>
+            [OnError]
+            private void OnError(StreamingContext context, ErrorContext errorContext)
+            {
+                errorContext.Handled = true;
+            }
         }
 
         /// <summary>
@@ -133,7 +234,6 @@
 
             string json2 = @"{'Name':'Mike'}";
             var customer2 = JsonConvert.DeserializeAnonymousType(json2, definition);
-            Contract.Assume(customer2 != null);
             Console.WriteLine(customer2.Name);
         }
 
@@ -158,174 +258,7 @@
 
             Console.WriteLine(string.Empty);
         }
-
-        /// <summary>
-        /// PreserveReferencesHandling setting.
-        /// https://www.newtonsoft.com/json/help/html/PreserveReferencesHandlingObject.htm
-        /// </summary>
-        public static void TestJson06()
-        {
-            Directory root = new Directory { Name = "Root" };
-            Directory documents = new Directory { Name = "My Documents", Parent = root };
-            File file = new File { Name = "ImportantLegalDocument.docx", Parent = documents };
-
-            documents.Files = new List<File> { file };
-
-            try
-            {
-                JsonConvert.SerializeObject(documents, Formatting.Indented);
-            }
-            catch (JsonSerializationException ex)
-            {
-                // Self referencing loop detected for property 'Parent' with type
-                // 'Newtonsoft.Json.Tests.Documentation.Examples.ReferenceLoopHandlingObject+Directory'. Path 'Files[0]'.
-                Console.WriteLine(ex.Message);
-            }
-
-            var settings0 = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.All };
-            string preserveReferenacesAll = JsonConvert.SerializeObject(documents, Formatting.Indented, settings0);
-
-            Console.WriteLine(preserveReferenacesAll);
-            //// {
-            ////   "$id": "1",
-            ////   "Name": "My Documents",
-            ////   "Parent": {
-            ////     "$id": "2",
-            ////     "Name": "Root",
-            ////     "Parent": null,
-            ////     "Files": null
-            ////   },
-            ////   "Files": {
-            ////     "$id": "3",
-            ////     "$values": [
-            ////       {
-            ////         "$id": "4",
-            ////         "Name": "ImportantLegalDocument.docx",
-            ////         "Parent": {
-            ////           "$ref": "1"
-            ////         }
-            ////       }
-            ////     ]
-            ////   }
-            //// }
-
-            var settings1 = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
-            string preserveReferenacesObjects = JsonConvert.SerializeObject(documents, Formatting.Indented, settings1);
-
-            Console.WriteLine(preserveReferenacesObjects);
-            //// {
-            ////   "$id": "1",
-            ////   "Name": "My Documents",
-            ////   "Parent": {
-            ////     "$id": "2",
-            ////     "Name": "Root",
-            ////     "Parent": null,
-            ////     "Files": null
-            ////   },
-            ////   "Files": [
-            ////     {
-            ////       "$id": "3",
-            ////       "Name": "ImportantLegalDocument.docx",
-            ////       "Parent": {
-            ////         "$ref": "1"
-            ////       }
-            ////     }
-            ////   ]
-            //// }
-            Console.WriteLine(string.Empty);
-        }
-
-        /// <summary>
-        /// the entity class Student.
-        /// </summary>
-        public class Student
-        {
-            /// <summary>
-            /// keep the additional data.
-            /// </summary>
-            [JsonExtensionData]
-            private readonly IDictionary<string, JToken> additionalData;
-
-            /// <summary>
-            /// the person's roles
-            /// </summary>
-            private List<string> roles;
-
-            /// <summary>
-            /// Initializes a new instance of the Student class.
-            /// </summary>
-            public Student()
-            {
-                this.additionalData = new Dictionary<string, JToken>();
-            }
-
-            /// <summary>
-            /// Gets or sets the Name of the student.
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Domain of the student.
-            /// </summary>
-            [JsonIgnore]
-            public string Domain { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Roles of the student.
-            /// </summary>
-            public List<string> Roles
-            {
-                get
-                {
-                    Contract.Ensures(Contract.Result<System.Collections.Generic.List<string>>() != null);
-
-                    Contract.Assume(this.roles != null);
-                    return this.roles;
-                }
-
-                set
-                {
-                    this.roles = value;
-                }
-            }
-
-            /// <summary>
-            /// Gets or sets the UserName of the student.
-            /// these properties are set in OnDeserialized
-            /// </summary>
-            [JsonIgnore]
-            public string UserName { get; set; }
-
-            /// <summary>
-            /// the OnDeserialized method.
-            /// </summary>
-            /// <param name="context">the context</param>
-            [OnDeserialized]
-            private void OnDeserialized(StreamingContext context)
-            {
-                // SAMAccountName is not deserialized to any property
-                // and so it is added to the extension data dictionary
-                string samAccountName = (string)this.additionalData["SamAccountName"];
-
-                string[] samAccountDic = samAccountName.Split('\\');
-                this.Domain = samAccountDic[0];
-                Contract.Assume(samAccountDic.Length > 2);
-                this.UserName = samAccountDic[1];
-            }
-
-            /// <summary>
-            /// the OnError method.
-            /// </summary>
-            /// <param name="context">the context</param>
-            /// /// <param name="errorContext">the errorContext</param>
-            [OnError]
-            private void OnError(StreamingContext context, ErrorContext errorContext)
-            {
-                Contract.Requires(errorContext != null);
-                errorContext.Handled = true;
-            }
-        }
-
+        
         /// <summary>
         /// the Person class.
         /// </summary>
@@ -380,6 +313,83 @@
         }
 
         /// <summary>
+        /// PreserveReferencesHandling setting.
+        /// https://www.newtonsoft.com/json/help/html/PreserveReferencesHandlingObject.htm
+        /// </summary>
+        public static void TestJson06()
+        {
+            Directory root = new Directory { Name = "Root" };
+            Directory documents = new Directory { Name = "My Documents", Parent = root };
+            File file = new File { Name = "ImportantLegalDocument.docx", Parent = documents };
+
+            documents.Files = new List<File> { file };
+
+            try
+            {
+                string defaultJson = JsonConvert.SerializeObject(documents, Formatting.Indented);
+                Console.WriteLine(defaultJson);
+            }
+            catch (JsonSerializationException ex)
+            {
+                // Self referencing loop detected for property 'Parent' with type
+                // 'Newtonsoft.Json.Tests.Documentation.Examples.ReferenceLoopHandlingObject+Directory'. Path 'Files[0]'.
+                Console.WriteLine(ex.Message);
+            }
+
+            var settings0 = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.All };
+            string preserveReferenacesAll = JsonConvert.SerializeObject(documents, Formatting.Indented, settings0);
+
+            Console.WriteLine(preserveReferenacesAll);
+            // {
+            //   "$id": "1",
+            //   "Name": "My Documents",
+            //   "Parent": {
+            //     "$id": "2",
+            //     "Name": "Root",
+            //     "Parent": null,
+            //     "Files": null
+            //   },
+            //   "Files": {
+            //     "$id": "3",
+            //     "$values": [
+            //       {
+            //         "$id": "4",
+            //         "Name": "ImportantLegalDocument.docx",
+            //         "Parent": {
+            //           "$ref": "1"
+            //         }
+            //       }
+            //     ]
+            //   }
+            // }
+
+            var settings1 = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
+            string preserveReferenacesObjects = JsonConvert.SerializeObject(documents, Formatting.Indented, settings1);
+
+            Console.WriteLine(preserveReferenacesObjects);
+            // {
+            //   "$id": "1",
+            //   "Name": "My Documents",
+            //   "Parent": {
+            //     "$id": "2",
+            //     "Name": "Root",
+            //     "Parent": null,
+            //     "Files": null
+            //   },
+            //   "Files": [
+            //     {
+            //       "$id": "3",
+            //       "Name": "ImportantLegalDocument.docx",
+            //       "Parent": {
+            //         "$ref": "1"
+            //       }
+            //     }
+            //   ]
+            // }
+            Console.WriteLine(string.Empty);
+        }
+
+        /// <summary>
         /// the Directory class.
         /// </summary>
         public class Directory
@@ -427,12 +437,79 @@
                     'BirthDate': '1234656000'
                 }";
 
-            var settings = new UnixSecondsConverter();
-            Person person = JsonConvert.DeserializeObject<Person>(json, settings);
+            var dateTimeonverter = new UnixSecondsConverter();
+            Person person = JsonConvert.DeserializeObject<Person>(json, dateTimeonverter);
 
             Console.WriteLine(person.BirthDate);
-        }       
-    } //public class JsonDotNet
+        }
 
-    
+        /// <summary>
+        /// 解析 okex future ticker
+        /// </summary>
+        public static void TestJson08() 
+        {
+            string json = @"
+            {
+                'date':'1528557628',
+	            'ticker':
+	            {
+	                'high':7715.13,
+	                'vol':1557226,
+	                'day_high':0,
+	                'last':7626.31,
+	                'low':7555.84,
+	                'contract_id':201806150000012,
+	                'buy':7626.89,
+	                'sell':7627.55,
+	                'coin_vol':0,
+	                'day_low':0,
+	                'unit_amount':100
+	            }
+            }";
+
+            var settings = new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter>
+                {
+                    new UnixSecondsConverter()
+                }
+            };
+
+            TickerBase tickerBase = JsonConvert.DeserializeObject<TickerBase>(json, settings);
+            Console.WriteLine(JsonConvert.SerializeObject(tickerBase, Formatting.Indented, settings));
+        }
+
+        public class TickerBase
+        {
+            [JsonProperty(PropertyName = "date")]
+            public DateTime Date { get; set; }
+
+            [JsonProperty(PropertyName = "ticker")]
+            public TickerDetail Ticker { get; set; }
+        }
+
+        public class TickerDetail
+        {
+            [JsonProperty(PropertyName = "contract_id")]
+            public long ContractCid { get; set; }
+
+            [JsonProperty(PropertyName = "high")]
+            public decimal High { get; set; }
+
+            [JsonProperty(PropertyName = "low")]
+            public decimal Low { get; set; }
+
+            [JsonProperty(PropertyName = "vol")]
+            public decimal Vol { get; set; }
+
+            [JsonProperty(PropertyName = "last")]
+            public decimal Last { get; set; }
+
+            [JsonProperty(PropertyName = "buy")]
+            public decimal Buy { get; set; }
+
+            [JsonProperty(PropertyName = "sell")]
+            public decimal Sell { get; set; }
+        }
+    } //public class JsonDotNet
 }

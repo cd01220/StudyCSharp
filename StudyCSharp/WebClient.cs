@@ -38,9 +38,4 @@
             } //using (HttpClient client = new HttpClient())
         }
     } //public class WebClient
-
-    public class Ticker
-    {
-        public decimal High { get; set; }
-    }
 }
