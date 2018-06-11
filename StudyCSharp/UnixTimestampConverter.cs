@@ -35,26 +35,27 @@
         private static DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
-        ///   Convert a long seconds into a DateTime
+        ///   Convert a long seconds into a DateTime (local time).
         /// </summary>
         public static DateTime UnixSecondsToDateTime(int unixTime)
         {
-            return epoch.AddSeconds(unixTime);
+            return epoch.AddSeconds(unixTime).ToLocalTime();
         }
 
         /// <summary>
-        ///   Convert a string seconds into a DateTime
+        ///   Convert a string seconds into a DateTime (local time).
         /// </summary>
         public static DateTime UnixSecondsToDateTime(string unixTime)
         {
-            return epoch.AddSeconds(int.Parse(unixTime));
+            return epoch.AddSeconds(int.Parse(unixTime)).ToLocalTime();
         }
 
         /// <summary>
-        ///   Convert a DateTime into a long seconds.
+        ///   Convert a DateTime into a timestamp seconds.
         /// </summary>
         public static long DateTimeToUnixSeconds(DateTime dateTime)
         {
+            Debug.Assert(dateTime.Kind == DateTimeKind.Local);
             Debug.Assert(dateTime.ToUniversalTime() >= epoch);
 
             var delta = dateTime.ToUniversalTime() - epoch;

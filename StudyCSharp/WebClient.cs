@@ -15,7 +15,7 @@
 
         public static void TestWebClient()
         {
-            TestWebClient04().Wait();
+            TestWebClient01().Wait();
         }
 
         /// <summary>
@@ -32,9 +32,10 @@
                 try
                 {
                     string responseBody = await client.GetStringAsync(uri);
-                    TickerContainer tickerContainer = JsonConvert.DeserializeObject<TickerContainer>(responseBody, UnixSecondsConverter.Instance);
-
                     Console.WriteLine(responseBody);
+
+                    TickerContainer tickerContainer = JsonConvert.DeserializeObject<TickerContainer>(responseBody, UnixSecondsConverter.Instance);
+                    Console.WriteLine(JsonConvert.SerializeObject(tickerContainer, Formatting.Indented, UnixSecondsConverter.Instance));
                 }
                 catch (HttpRequestException e)
                 {
@@ -44,6 +45,7 @@
             }
             sw.Stop();
             Console.WriteLine("Elapsed = " + sw.ElapsedMilliseconds);
+            Debugger.Break();
         }
 
 
