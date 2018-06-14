@@ -47,8 +47,7 @@
             Console.WriteLine("Elapsed = " + sw.ElapsedMilliseconds);
             Debugger.Break();
         }
-
-
+        
         /// <summary>
         /// get ticket from okex.com with cancellation support, and basic error management
         /// </summary>
