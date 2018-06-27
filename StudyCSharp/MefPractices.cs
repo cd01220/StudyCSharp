@@ -4,50 +4,55 @@
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Diagnostics;
+    using System.Threading;
 
     class MefPractices
     {
+        [Import]
+        private string message;
+
+        public string Message { get => this.message; set => this.message = value; }
+
         public static void TestMefPractices()
         {
-            TestMefPractices01();
+            MefPractices mefPractices = new MefPractices();
+            mefPractices.TestMefPractices01();
         }
 
-        public static void TestMefPractices01() 
+        public void TestMefPractices01() 
         {
-            MefPractices mefPractices = new MefPractices();
+            Compose01();
+            Debug.WriteLine("abc00");
+            Console.WriteLine("abc01");
 
-            var myImport = new MyClass() { MajorRevision = 1 };
-            var myExport = new MyExportClass();
-            Console.WriteLine("{0}, {1}", myImport.MajorRevision, myExport.MajorRevision);
-
-            mefPractices.Compose(myImport, myExport);
-
-            myExport.MajorRevision = 10;
-            Console.WriteLine("{0}, {1}", myImport.MajorRevision, myExport.MajorRevision);
-
+            if (string.IsNullOrEmpty(this.message))
+            {
+                throw new Exception("wrong message");
+            }
             Console.WriteLine(string.Empty);
         }
 
-        private void Compose(MyClass myClass, MyExportClass myExportClass)
+        private void Compose01()
         {
-            var catalog = new AssemblyCatalog(typeof(MefPractices).Assembly);
+            //We are loading the currently-executing assembly
+            AssemblyCatalog catalog = new AssemblyCatalog(typeof(MefPractices).Assembly);
             CompositionContainer container = new CompositionContainer(catalog);
-            container.ComposeParts(myClass, myExportClass);
+
+            //Here we are hooking up the "plugs"
+            //to the "ports".  This is one of the 
+            //options to hook everything up.  I've 
+            //commented out the other option below.
+            container.SatisfyImportsOnce(this);
+            //container.ComposeParts(this);
         }
     }
-
-    public class MyClass
+    
+    //Step 4
+    public class ExportClass01 
     {
-        [Import("MajorRevision")]
-        public int MajorRevision { get; set; }
-    }
-
-    public class MyExportClass
-    {
-        [Export("MajorRevision")] //This one will match.  
-        public int MajorRevision = 4;
-
-        [Export("MinorRevision")]
-        public int MinorRevision = 16;
+        //This is the string property that we are
+        //exporting (making it a "plug")
+        [Export()]
+        public string MyMessage { get; set; } = "This is my example message.";
     }
 }

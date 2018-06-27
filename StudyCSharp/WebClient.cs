@@ -15,7 +15,7 @@
 
         public static void TestWebClient()
         {
-            TestWebClient01().Wait();
+            TestWebClient04().Wait();
         }
 
         /// <summary>
@@ -108,17 +108,31 @@
             if (stream == null || stream.CanRead == false)
                 return default(T);
 
-            using (var streamReader = new StreamReader(stream))
-            using (var jsonTextReader = new JsonTextReader(streamReader))
+            StreamReader streamReader = null;
+            T searchResult = default(T);
+            try 
             {
-                var settings = new JsonSerializerSettings
+                streamReader = new StreamReader(stream);
+                using (var jsonTextReader = new JsonTextReader(streamReader))
                 {
-                    Converters = new List<JsonConverter> { new UnixSecondsConverter() }
-                };
-                var jsonSerializer = JsonSerializer.Create(settings);
-                var searchResult = jsonSerializer.Deserialize<T>(jsonTextReader);
-                return searchResult;
-            }            
+                    streamReader = null;
+                    var settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new UnixSecondsConverter() }
+                    };
+                    var jsonSerializer = JsonSerializer.Create(settings);
+                    searchResult = jsonSerializer.Deserialize<T>(jsonTextReader);
+                }
+            }
+            finally
+            {
+                if (streamReader != null)
+                    streamReader.Dispose();
+
+                stream = null;
+            }
+
+            return searchResult;
         }
 
         private static async Task<string> StreamToStringAsync(Stream stream)
@@ -149,16 +163,31 @@
             try
             {
                 HttpResponseMessage response = await client.GetAsync(uri, cts.Token);
-                var stream = await response.Content.ReadAsStreamAsync();
 
-                if (!response.IsSuccessStatusCode)
+                // to avoid CA2202 warning (https://msdn.microsoft.com/library/ms182334.aspx)
+                // using try statement, instead of using (stream = await response.Content.ReadAsStreamAsync()) {...}
+                Stream stream = null;
+                try
                 {
-                    var responseBody = await StreamToStringAsync(stream);
-                    throw new HttpRequestException(responseBody);
-                }
+                    stream = await response.Content.ReadAsStreamAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseBody = await StreamToStringAsync(stream);
+                        throw new HttpRequestException(responseBody);
+                    }
 
-                var tickerContainer = DeserializeJsonFromStream<TickerContainer>(stream);
-                Console.WriteLine(JsonConvert.SerializeObject(tickerContainer, Formatting.Indented, UnixSecondsConverter.Instance));
+                    var tickerContainer = DeserializeJsonFromStream<TickerContainer>(stream);
+                    Console.WriteLine(JsonConvert.SerializeObject(tickerContainer, Formatting.Indented, UnixSecondsConverter.Instance));
+                }
+                catch(HttpRequestException e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    if (stream != null)
+                        stream.Dispose();
+                }
             }
             catch (HttpRequestException e)
             {
