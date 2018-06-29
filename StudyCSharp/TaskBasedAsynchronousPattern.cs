@@ -10,7 +10,7 @@
     {
         public static void TestAsynchronous()
         {
-            TestAsynchronous02();
+            var result = TestAsynchronous02().Result;
 
             Console.WriteLine(string.Empty);
         }
@@ -72,7 +72,7 @@
             }
         }
 
-        #pragma warning disable 1998
+        //#pragma warning disable 1998
         private static async Task<int> ReadAsync()
         {
             int hours = 0;
@@ -86,6 +86,41 @@
             Task<int> task =  ReadAsync();
             
             return task;
+        }
+
+
+        // 模拟btc spot-fututures-arbitrage robot的主线程：监听最新的期货和现货价格，Robot根据最新的价格做相应的处理，并继续监听价格变化。
+        public static void TestAsynchronous03()
+        {
+            Changes changes = new Changes();
+
+            Action action = delegate ()
+            {
+                for (int i = 0; i < 100; ++i)
+                {
+                    Task<decimal> price0 = changes.GetPrice(0);
+                    Task<decimal> price1 = changes.GetPrice(1);
+
+                    Task.WhenAny(price0, price1);
+                }
+
+                return;
+            };
+
+            Task.Run(action);
+
+            Console.ReadKey();
+            return ;
+        }
+
+        public class Changes
+        {
+            // 同一个平台的行情信息可能被多个robot使用。
+            public async Task<decimal> GetPrice(int currency)
+            {
+                await Task.Delay(2000);
+                return 0.0M;
+            }
         }
     }
 }
