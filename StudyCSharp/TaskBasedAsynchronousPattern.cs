@@ -1,18 +1,23 @@
 ﻿namespace StudyCSharp
 {
     using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Threading.Tasks.Dataflow;
 
     public class TaskBasedAsynchronousPattern
     {
         public static void TestAsynchronous()
         {
-            var result = TestAsynchronous02().Result;
+            TestAsynchronous04();
+            TestAsynchronous04();
 
-            Console.WriteLine(string.Empty);
+            Console.ReadKey();
         }
 
         public static void TestAsynchronous01()
@@ -88,39 +93,54 @@
             return task;
         }
 
-
-        // 模拟btc spot-fututures-arbitrage robot的主线程：监听最新的期货和现货价格，Robot根据最新的价格做相应的处理，并继续监听价格变化。
-        public static void TestAsynchronous03()
+        public static async void TestAsynchronous03()
         {
-            Changes changes = new Changes();
+            var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-            Action action = delegate ()
-            {
-                for (int i = 0; i < 100; ++i)
-                {
-                    Task<decimal> price0 = changes.GetPrice(0);
-                    Task<decimal> price1 = changes.GetPrice(1);
+            BroadcastBlock<int> broadcast = new BroadcastBlock<int>(v => v);
+            BufferBlock<int> bufferBlock0 = new BufferBlock<int>();
+            BufferBlock<int> bufferBlock1 = new BufferBlock<int>();
 
-                    Task.WhenAny(price0, price1);
-                }
+            IDisposable unlink0 = broadcast.LinkTo(bufferBlock0, linkOptions);
+            IDisposable unlink1 = broadcast.LinkTo(bufferBlock1, linkOptions);
 
-                return;
-            };
+            broadcast.Post(1);
+            broadcast.Post(2);
 
-            Task.Run(action);
+            Console.WriteLine("bufferBlock0 {0}", await bufferBlock0.ReceiveAsync());
+            Console.WriteLine("bufferBlock0 {0}", await bufferBlock0.ReceiveAsync());
 
-            Console.ReadKey();
-            return ;
+            Console.WriteLine("bufferBlock1 {0}", await bufferBlock1.ReceiveAsync());
+            Console.WriteLine("bufferBlock1 {0}", await bufferBlock1.ReceiveAsync());
+
+            unlink0.Dispose();
+            unlink1.Dispose();
+
+            broadcast.Complete();            
         }
 
-        public class Changes
+        public static async void TestAsynchronous04()
         {
-            // 同一个平台的行情信息可能被多个robot使用。
-            public async Task<decimal> GetPrice(int currency)
+            for (int i = 0; i < 10; ++i)
             {
-                await Task.Delay(2000);
-                return 0.0M;
+                MarketEnt market = await GetMarket();
+                Console.WriteLine("{0}, {1}", market.Time, market.Last);
             }
+        }
+
+        private static BufferBlock<MarketEnt> bufferBlock = new BufferBlock<MarketEnt>();
+        private static object syncObj = new object();
+        private static bool running = false;
+        private static async Task<MarketEnt> GetMarket()
+        {
+            lock (syncObj)
+            {
+                if (bufferBlock.Count == 0 && !running)
+                {
+                    // Refresh
+                }
+            }
+            return await bufferBlock.ReceiveAsync();
         }
     }
 }

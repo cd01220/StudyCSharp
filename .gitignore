@@ -1,9 +1,7 @@
 #folder
 .svn/
-.git/
 .metadata/
 .settings/
-.svn/
 .vs/
 Debug/
 __pycache__/

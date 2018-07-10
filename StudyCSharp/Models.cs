@@ -110,4 +110,11 @@ namespace StudyCSharp
         [JsonProperty(PropertyName = "sell")]
         public decimal Sell { get; set; }
     }
+
+    public class MarketEnt
+    {
+        public DateTime Time { get; set; }
+
+        public decimal Last { get; set; }
+    }
 }

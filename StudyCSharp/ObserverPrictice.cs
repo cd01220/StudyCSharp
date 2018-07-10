@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 
 namespace StudyCSharp
 {
-    public class MarketEnt
-    {
-        public decimal Price { get; set; }
-    }
-
     public class MarketPoller : IObservable<MarketEnt>
     {
         public delegate void UnsubscribeHandler(IObserver<MarketEnt> observer);
@@ -141,7 +136,7 @@ namespace StudyCSharp
 
         public void OnNext(MarketEnt marketEnt)
         {
-            Console.WriteLine("ask price={0:0.00}", marketEnt.Price);
+            Console.WriteLine("ask Last={0:0.00}", marketEnt.Last);
         }
     }
 
