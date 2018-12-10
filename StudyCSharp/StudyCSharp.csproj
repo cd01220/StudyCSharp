@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiagnosticPractices.cs" />
+    <Compile Include="ExpressionTree.cs" />
     <Compile Include="JsonDotNet.cs" />
     <Compile Include="MefPractices.cs" />
     <Compile Include="Models.cs" />
