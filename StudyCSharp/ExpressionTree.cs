@@ -49,9 +49,11 @@
                 )
             );
 
-            foreach (var expr in body.Expressions)
+            foreach (Expression expr in body.Expressions)
+            {
                 Console.WriteLine(expr.ToString());
-            
+            }
+
             //// Create a lambda expression.  
             Expression<Func<int, int>> expression = Expression.Lambda<Func<int, int>>(body, nArgument);
 
