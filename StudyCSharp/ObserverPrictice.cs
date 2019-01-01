@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace StudyCSharp
 {
+    /*
+     * 利用 Reactive Extension, 可以让代码更简洁，不必自己写代码实现IObservable。
+     * https://docs.microsoft.com/en-us/previous-versions/dotnet/reactive-extensions/hh242970(v%3dvs.103)
+     */
     public class MarketPoller : IObservable<MarketEnt>
     {
         public delegate void UnsubscribeHandler(IObserver<MarketEnt> observer);
