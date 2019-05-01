@@ -37,3 +37,5 @@ dotnet_naming_rule.general_naming.symbols                   = general
 dotnet_naming_rule.general_naming.style                     = pascal_case_style
 dotnet_naming_symbols.general.applicable_kinds              = class,struct,enum,property,method,event,namespace,delegate
 dotnet_naming_symbols.general.applicable_accessibilities    = *
+
+

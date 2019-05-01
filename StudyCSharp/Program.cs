@@ -9,11 +9,13 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reactive.Testing;
+using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 
 namespace StudyCSharp
@@ -22,8 +24,7 @@ namespace StudyCSharp
     {
         private static void Main(string[] args)
         {
-            RxPractices.TestRx1();
-            Console.ReadKey();            
+            OkexContractCounter.TryCountTransferAmount();
         }
     }
 }

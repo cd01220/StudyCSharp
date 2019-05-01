@@ -95,6 +95,7 @@
     <Compile Include="MefPractices.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="ObserverPrictice.cs" />
+    <Compile Include="OkexContractCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionPractices.cs" />

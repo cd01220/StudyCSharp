@@ -57,7 +57,7 @@ namespace StudyCSharp
             });
         }
 
-        // 如果没有observers， 停止远程查询（这里用假设DoSomething()查询远程服务器的信息）。 实现方案1，利用Defer/Finally 对observer计数。
+        // 如果没有observers， 停止远程查询（这里用假设DoSomething()查询远程服务器的信息）。 实现方案2，利用Defer/Finally 对observer计数。
         public static void TestRx2()
         {
             var source = CountSubscribers();
