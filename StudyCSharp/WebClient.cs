@@ -1,13 +1,24 @@
-﻿namespace StudyCSharp
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace StudyCSharp
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Web;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public class WebClient
     {
@@ -15,7 +26,7 @@
 
         public static void TestWebClient()
         {
-            TestWebClient04().Wait();
+            TestWebClient05().Wait();
         }
 
         /// <summary>
@@ -197,5 +208,107 @@
 
             Debugger.Break();
         }
-    } //public class WebClient
+
+        /// <summary>
+        /// http client with DelegatingHandler
+        /// </summary>
+        /// <returns></returns>
+        public static async Task TestWebClient05()
+        {
+            string uri = "https://www.okex.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=next_week";
+            Stopwatch sw = Stopwatch.StartNew();
+
+            OkexDelegatingHandler delegatingHandler = new OkexDelegatingHandler(null);
+            HttpClient httpClient = new HttpClient(delegatingHandler);
+            // Call asynchronous network methods in a try/catch block to handle exceptions
+            try
+            {                
+                string responseBody = await httpClient.GetStringAsync(uri);
+                Console.WriteLine(responseBody);
+
+                TickerContainer tickerContainer = JsonConvert.DeserializeObject<TickerContainer>(responseBody, UnixSecondsConverter.Instance);
+                Console.WriteLine(JsonConvert.SerializeObject(tickerContainer, Formatting.Indented, UnixSecondsConverter.Instance));
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
+            sw.Stop();
+            Console.WriteLine("Elapsed = " + sw.ElapsedMilliseconds);
+            Debugger.Break();
+        }
+    } //public class WebClient   
+
+    public class OkexDelegatingHandler : DelegatingHandler
+    {
+        private readonly string publicKey;
+        private readonly string privateKey;
+        private readonly string passPhrase;
+        private readonly string bodyStr;
+
+        public OkexDelegatingHandler(string publicKey, string privateKey, string passPhrase, string bodyStr)
+        {
+            this.publicKey = publicKey;
+            this.privateKey = privateKey;
+            this.passPhrase = passPhrase;
+            this.bodyStr = bodyStr;
+
+            InnerHandler = new HttpClientHandler();
+        }
+
+        public OkexDelegatingHandler(string bodyStr)
+        {
+            this.bodyStr = bodyStr;
+
+            InnerHandler = new HttpClientHandler();
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            string timeStamp = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now).ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (!string.IsNullOrEmpty(publicKey))
+            {
+                Debug.Assert(string.IsNullOrEmpty(privateKey) && string.IsNullOrEmpty(passPhrase));
+                string method = request.Method.Method;
+                request.Headers.Add("OK-ACCESS-KEY", publicKey);
+
+                var requestUrl = request.RequestUri.PathAndQuery;
+                string sign = "";
+                if (!string.IsNullOrEmpty(bodyStr))
+                {
+                    sign = HmacSHA256($"{timeStamp}{method}{requestUrl}{bodyStr}", privateKey);
+                }
+                else
+                {
+                    sign = HmacSHA256($"{timeStamp}{method}{requestUrl}", privateKey);
+                }
+
+                request.Headers.Add("OK-ACCESS-SIGN", sign);
+                request.Headers.Add("OK-ACCESS-PASSPHRASE", passPhrase);
+            }
+            else
+            {
+                Debug.Assert(string.IsNullOrEmpty(privateKey) && string.IsNullOrEmpty(passPhrase));
+            }
+
+            request.Headers.Add("OK-ACCESS-TIMESTAMP", timeStamp.ToString());
+
+            return base.SendAsync(request, cancellationToken);
+        }
+
+        private string HmacSHA256(string infoStr, string secret)
+        {
+            byte[] sha256Data = Encoding.UTF8.GetBytes(infoStr);
+            byte[] secretData = Encoding.UTF8.GetBytes(secret);
+            using (var hmacsha256 = new HMACSHA256(secretData))
+            {
+                byte[] buffer = hmacsha256.ComputeHash(sha256Data);
+                return Convert.ToBase64String(buffer);
+            }
+        }
+    }
 }

@@ -85,6 +85,7 @@ namespace StudyCSharp
             decimal positionVolume1 = longVolume1 + shortVolume1;   // 多头持仓量 + 空头持仓量 (单位：张)            
             decimal longAmount1 = longVolume1 * denomination;      // 多头持仓金额
             decimal shortAmount1 = shortVolume1 * denomination;    // 空头持仓金额
+            decimal positionAmount1 = longAmount1 + shortAmount1;   // 多头+空头持仓总金额 
 
             /******************* 求一元二次方程解 *******************/
             decimal a = positionAmount0 * marginRatio0 + longAmount0 - shortAmount0;
@@ -122,6 +123,8 @@ namespace StudyCSharp
                 Console.WriteLine($"contract 0 price = {contract0Price}, contract 1 price = {contract1Price}");
                 decimal safetyRange = Math.Abs(1 - contract0Price / ((contract1Price + contract0Price) / 2));
                 Console.WriteLine($"price safety range = {Math.Floor(safetyRange * 100)}%");
+                decimal leverage = (positionAmount0 + positionAmount1) / 2 / (balance0 * price + balance1 * price);
+                Console.WriteLine($"leverage = {Math.Floor(leverage * 100)}%");
             }
         }
     }

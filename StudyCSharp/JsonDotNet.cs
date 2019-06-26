@@ -21,10 +21,7 @@
         /// </summary>
         public static void TestJson()
         {
-            TestJson02();
-            TestJson06();
-            TestJson07();
-            TestJson08();
+            TestJson05();
         }
 
         /// <summary>
@@ -89,98 +86,6 @@
              }";
              student = JsonConvert.DeserializeObject<Student>(json);
              Console.WriteLine(JsonConvert.SerializeObject(student, Formatting.Indented));
-        }
-
-        /// <summary>
-        /// the entity class Student.
-        /// </summary>
-        public class Student
-        {
-            /// <summary>
-            /// keep the additional data.
-            /// </summary>
-            [JsonExtensionData]
-            private readonly IDictionary<string, JToken> additionalData;
-
-            /// <summary>
-            /// the person's roles
-            /// </summary>
-            private List<string> roles;
-
-            /// <summary>
-            /// Initializes a new instance of the Student class.
-            /// </summary>
-            public Student()
-            {
-                this.additionalData = new Dictionary<string, JToken>();
-            }
-
-            /// <summary>
-            /// Gets or sets the Name of the student.
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Domain of the student.
-            /// </summary>
-            [JsonIgnore]
-            public string Domain { get; set; }
-
-            /// <summary>
-            /// Gets or sets the Roles of the student.
-            /// </summary>
-            public List<string> Roles
-            {
-                get
-                {
-                    return this.roles;
-                }
-
-                set
-                {
-                    this.roles = value;
-                }
-            }
-
-            /// <summary>
-            /// Gets or sets the UserName of the student.
-            /// these properties are set in OnDeserialized
-            /// </summary>
-            [JsonIgnore]
-            public string UserName { get; set; }
-
-            /// <summary>
-            /// the OnDeserialized method.
-            /// Example:
-            /// string json = @"{
-            ///  'Name': 'John Smith',
-            ///  'SAMAccountName': 'contoso\\johns'
-            /// }";
-            /// var student = JsonConvert.DeserializeObject<Student>(json);
-            /// </summary>
-            /// <param name="context">the context</param>
-            [OnDeserialized]
-            private void OnDeserialized(StreamingContext context)
-            {
-                // SAMAccountName is not deserialized to any property
-                // and so it is added to the extension data dictionary
-                string samAccountName = (string)this.additionalData["SamAccountName"];
-
-                string[] samAccountDic = samAccountName.Split('\\');
-                this.Domain = samAccountDic[0];
-                this.UserName = samAccountDic[1];
-            }
-
-            /// <summary>
-            /// the OnError method.
-            /// </summary>
-            /// <param name="context">the context</param>
-            /// /// <param name="errorContext">the errorContext</param>
-            [OnError]
-            private void OnError(StreamingContext context, ErrorContext errorContext)
-            {
-                errorContext.Handled = true;
-            }
         }
 
         /// <summary>
@@ -404,4 +309,96 @@
             Console.WriteLine(JsonConvert.SerializeObject(tickerContainer, Formatting.Indented, settings));
         }        
     } //public class JsonDotNet
+
+    /// <summary>
+    /// the entity class Student.
+    /// </summary>
+    public class Student
+    {
+        /// <summary>
+        /// keep the additional data.
+        /// </summary>
+        [JsonExtensionData]
+        private readonly IDictionary<string, JToken> additionalData;
+
+        /// <summary>
+        /// the person's roles
+        /// </summary>
+        private List<string> roles;
+
+        /// <summary>
+        /// Initializes a new instance of the Student class.
+        /// </summary>
+        public Student()
+        {
+            this.additionalData = new Dictionary<string, JToken>();
+        }
+
+        /// <summary>
+        /// Gets or sets the Name of the student.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Domain of the student.
+        /// </summary>
+        [JsonIgnore]
+        public string Domain { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Roles of the student.
+        /// </summary>
+        public List<string> Roles
+        {
+            get
+            {
+                return this.roles;
+            }
+
+            set
+            {
+                this.roles = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the UserName of the student.
+        /// these properties are set in OnDeserialized
+        /// </summary>
+        [JsonIgnore]
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// the OnDeserialized method.
+        /// Example:
+        /// string json = @"{
+        ///  'Name': 'John Smith',
+        ///  'SAMAccountName': 'contoso\\johns'
+        /// }";
+        /// var student = JsonConvert.DeserializeObject<Student>(json);
+        /// </summary>
+        /// <param name="context">the context</param>
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            // SAMAccountName is not deserialized to any property
+            // and so it is added to the extension data dictionary
+            string samAccountName = (string)this.additionalData["SamAccountName"];
+
+            string[] samAccountDic = samAccountName.Split('\\');
+            this.Domain = samAccountDic[0];
+            this.UserName = samAccountDic[1];
+        }
+
+        /// <summary>
+        /// the OnError method.
+        /// </summary>
+        /// <param name="context">the context</param>
+        /// /// <param name="errorContext">the errorContext</param>
+        [OnError]
+        private void OnError(StreamingContext context, ErrorContext errorContext)
+        {
+            errorContext.Handled = true;
+        }
+    }
 }

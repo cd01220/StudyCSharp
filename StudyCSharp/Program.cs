@@ -17,14 +17,19 @@ using System.Windows.Forms;
 using Microsoft.Reactive.Testing;
 using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace StudyCSharp
 {
     public class Program
-    {
+    {   
         private static void Main(string[] args)
         {
-            OkexContractCounter.TryCountTransferAmount();
+            CancellationTokenSource source = new CancellationTokenSource();
+            source.Cancel();
+            source.Cancel();
+
+            WebClient.TestWebClient();
         }
     }
 }
