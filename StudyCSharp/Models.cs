@@ -78,6 +78,41 @@ namespace StudyCSharp
         public Directory Parent { get; set; }
     }
 
+    public class Market
+    {
+        public int Id { get; set; }
+
+        public virtual decimal AskPrice { get; set; }
+
+        public virtual decimal BidPrice { get; set; }
+
+        public virtual decimal LastPrice { get; set; }
+
+        // UTC 时间
+        public virtual DateTime DateTime { get; set; }
+    }
+
+    public class ContractMarket : Market
+    {
+        public string ContractId { get; set; }
+    }
+
+    public class OkexContractMarket : ContractMarket
+    {
+        [JsonProperty(PropertyName = "best_ask")]
+        public override decimal AskPrice { get; set; }
+
+        [JsonProperty(PropertyName = "best_bid")]
+        public override decimal BidPrice { get; set; }
+
+        [JsonProperty(PropertyName = "last")]
+        public override decimal LastPrice { get; set; }
+
+        // UTC 时间
+        [JsonProperty(PropertyName = "timestamp")]
+        public override DateTime DateTime { get; set; }
+    }
+
     public class TickerContainer
     {
         [JsonProperty(PropertyName = "date")]

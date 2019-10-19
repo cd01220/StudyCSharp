@@ -25,9 +25,9 @@ namespace StudyCSharp
     {   
         private static void Main(string[] args)
         {
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.Cancel();
-            source.Cancel();
+            string str0 = "hello";
+            string str1 = null;
+            string v = $"{str0}{str1}";
 
             WebClient.TestWebClient();
         }
