@@ -8,9 +8,9 @@ namespace Changes.ViewModels
     {
         public virtual DateTime DateTime { get; set; }
         public virtual decimal OPrice { get; set; }
-        public virtual decimal CPrice { get; set; }
         public virtual decimal HPrice { get; set; }
         public virtual decimal LPrice { get; set; }
+        public virtual decimal CPrice { get; set; }
         public virtual decimal Volume { get; set; }
     }
 }

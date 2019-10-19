@@ -6,12 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Changes.ViewModels;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Changes
 {
@@ -21,26 +23,57 @@ namespace Changes
         private const string FutureSegment = "api/futures/v3";
         private const string SwapSegment = "api/swap/v3";
 
-        public async Task<List<Candle>> GetCandlesAsync(string contractId, DateTime start, DateTime end, CancellationToken token)
+        public async Task<List<Candle>> GetCandlesAsync(string contractId, int granularity, DateTime? start, DateTime? end, CancellationToken token)
         {
-            async Task<object> toTry() { return await GetCandlesImplAsync(contractId, start, end, token); }
+            async Task<object> toTry() { return await GetCandlesImplAsync(contractId, granularity, start, end, token); }
             return (await Retry.RetryAsync(toTry, 5, token)) as List<Candle>;
         }
 
-        public async Task<List<Candle>> GetCandlesImplAsync(string contractId, DateTime start, DateTime end, CancellationToken token)
+        public async Task<List<Candle>> GetCandlesImplAsync(string contractId, int granularity, DateTime? start, DateTime? end, CancellationToken token)
         {
             string segment = contractId.IndexOf("SWAP") > 0 ? SwapSegment : FutureSegment;
             string url = $"{BaseUrl}/{segment}/instruments/{contractId}/candles";
 
             using (var delegatingHandler = new OkexDelegatingHandler(null))
             using (var httpClient = new HttpClient(delegatingHandler))
-            using (var response = await httpClient.GetAsync(url))
             {
-                response.EnsureSuccessStatusCode();
-                string contentStr = await response.Content.ReadAsStringAsync();
+                Dictionary<string, string> queryParams = new Dictionary<string, string>();
+                if (start.HasValue)
+                {
+                    queryParams.Add("start", start.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));
+                }
+                if (end.HasValue)
+                {
+                    queryParams.Add("end", end.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));
+                }
+                queryParams.Add("granularity", granularity.ToString());
+                using (var encodedContent = new FormUrlEncodedContent(queryParams))
+                {
+                    string paramsStr = await encodedContent.ReadAsStringAsync();
+                    using (var response = await httpClient.GetAsync($"{url}?{paramsStr}"))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        string contentStr = await response.Content.ReadAsStringAsync();
 
-                OkexTicker ticker = JsonConvert.DeserializeObject<OkexTicker>(contentStr);
-                return await Task.FromResult<List<Candle>>(new List<Candle>());
+                        List<Candle> candles = new List<Candle>();
+                        JArray jArray = JArray.Parse(contentStr);
+                        foreach (JToken v in jArray)
+                        {
+                            string[] iterms = v.ToArray().Select(o => o.ToString()).ToArray();
+                            Candle candle = new Candle()
+                            {
+                                DateTime = DateTime.Parse(iterms[0]),
+                                OPrice = decimal.Parse(iterms[1]),
+                                HPrice = decimal.Parse(iterms[2]),
+                                LPrice = decimal.Parse(iterms[3]),
+                                CPrice = decimal.Parse(iterms[4]),
+                                Volume = decimal.Parse(iterms[5])
+                            };
+                            candles.Insert(0, candle);
+                        }
+                        return candles;
+                    }
+                }
             }
 
             throw new InvalidOperationException("This should never happen!");
@@ -85,27 +118,6 @@ namespace Changes
             // UTC 时间
             [JsonProperty(PropertyName = "timestamp")]
             public override DateTime DateTime { get; set; }
-        }
-
-        private class OkexCandle
-        {
-            [JsonProperty(PropertyName = "timestamp")]
-            public virtual DateTime DateTime { get; set; }
-
-            [JsonProperty(PropertyName = "open")]
-            public virtual decimal OPrice { get; set; }
-
-            [JsonProperty(PropertyName = "close")]
-            public virtual decimal CPrice { get; set; }
-
-            [JsonProperty(PropertyName = "high")]
-            public virtual decimal HPrice { get; set; }
-
-            [JsonProperty(PropertyName = "low")]
-            public virtual decimal LPrice { get; set; }
-
-            [JsonProperty(PropertyName = "volume")]
-            public virtual decimal Volume { get; set; }
         }
 
         private class OkexDelegatingHandler : DelegatingHandler

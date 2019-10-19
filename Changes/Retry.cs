@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Changes
 {
-    public class Retry
+    class Retry
     {
         public static async Task<object> RetryAsync(Func<Task<object>> toTry, int tries, CancellationToken token)
         {
