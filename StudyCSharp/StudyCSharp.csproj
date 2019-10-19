@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Reactive.Testing, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Reactive.Testing.4.1.5\lib\net46\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
@@ -89,23 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiagnosticPractices.cs" />
-    <Compile Include="ExpressionTree.cs" />
-    <Compile Include="JsonDotNet.cs" />
-    <Compile Include="MefPractices.cs" />
-    <Compile Include="Models.cs" />
     <Compile Include="ObserverPrictice.cs" />
-    <Compile Include="OkexContractCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionPractices.cs" />
     <Compile Include="RxPractices.cs" />
-    <Compile Include="TaskBasedAsynchronousPattern.cs" />
-    <Compile Include="UnixTimestampConverter.cs" />
-    <Compile Include="WebClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".editorconfig" />
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -120,5 +112,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

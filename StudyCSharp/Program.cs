@@ -28,8 +28,6 @@ namespace StudyCSharp
             string str0 = "hello";
             string str1 = null;
             string v = $"{str0}{str1}";
-
-            WebClient.TestWebClient();
         }
     }
 }
