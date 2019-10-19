@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Changes;
 using Microsoft.Reactive.Testing;
 using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
@@ -25,9 +26,11 @@ namespace StudyCSharp
     {   
         private static void Main(string[] args)
         {
-            string str0 = "hello";
-            string str1 = null;
-            string v = $"{str0}{str1}";
+            var tokenSource = new CancellationTokenSource(); 
+
+            OkexChanges changes = new OkexChanges();
+            var result = changes.GetTickerAsync("BTC-USD-191227", tokenSource.Token).Result;
+            Console.WriteLine(JsonConvert.SerializeObject(result));
         }
     }
 }
