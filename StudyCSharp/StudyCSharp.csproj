@@ -120,6 +120,10 @@
       <Project>{587257d6-4f24-4bae-8a4e-7427d61f9ad2}</Project>
       <Name>Changes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyTaLib\MyTaLib.csproj">
+      <Project>{9127dedc-b0ec-4590-bfa1-55b1e5ea8ebd}</Project>
+      <Name>MyTaLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
