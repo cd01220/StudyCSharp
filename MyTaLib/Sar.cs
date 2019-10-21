@@ -5,6 +5,22 @@ using System.Linq;
 namespace MyTaLib
 {
     // 参考资料： https://school.stockcharts.com/doku.php?id=technical_indicators:parabolic_sar
+    // Example:
+    //CancellationTokenSource tokenSource = new CancellationTokenSource();
+    //OkexChanges changes = new OkexChanges();
+
+    //IEnumerable<Candle> candles = changes.GetCandlesAsync("BTC-USD-191227", 3600 * 24, null, null, tokenSource.Token)
+    //    .Result
+    //    .SkipWhile(o => o.DateTime < TimeZone.CurrentTimeZone.ToUniversalTime(new DateTime(2018, 12, 28)));
+    //Console.WriteLine(JsonConvert.SerializeObject(candles, Formatting.Indented));
+
+    //Sar sar = new Sar(0.02d, 0.2d, 4);
+    //sar.SetCycle0((double)candles.First().HPrice, (double)candles.First().LPrice, 3974.99d, 0.02d);
+    //foreach (Candle candle in candles.Skip(1))
+    //{
+    //    double value = sar.AddCycle((double)candle.HPrice, (double)candle.LPrice);
+    //    Console.WriteLine($"hi = {candle.HPrice}, low = {candle.LPrice}, sar = {value}");
+    //}
     public class Sar
     {
         private readonly double optAcc;
