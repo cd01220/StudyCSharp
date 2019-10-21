@@ -31,13 +31,16 @@ namespace MyTaLib
         public double AddCycle(double hi, double lo)
         {            
             Cycle prevCycle = cycles.Last();
+
+            double sar;
             if (prevCycle.Sar < prevCycle.Lo)
             {                
-                double sar = prevCycle.Sar + (prevCycle.Acc * (ep - prevCycle.Sar));
+                sar = prevCycle.Sar + (prevCycle.Acc * (ep - prevCycle.Sar));
                 if (sar > lo)
                 {
                     // 上涨周期 =》 下跌周期
                     sar = Math.Max(Enumerable.Reverse(cycles).Take(maxCyclesNumber - 1).Max(o => o.Hi), hi);
+                    cycles.Clear();
                     cycles.Add(new Cycle() { Hi = hi, Lo = lo, Acc = optAcc, Sar = sar });
                     ep = lo;
                 }
@@ -50,13 +53,14 @@ namespace MyTaLib
             }
             else
             {
-                double sar = prevCycle.Sar + (prevCycle.Acc * (ep - prevCycle.Sar));
+                sar = prevCycle.Sar + (prevCycle.Acc * (ep - prevCycle.Sar));
                 if (sar < hi)
                 {
                     // 下跌周期 =》 上涨周期
                     sar = Math.Min(Enumerable.Reverse(cycles).Take(maxCyclesNumber - 1).Min(o => o.Lo), lo);
+                    cycles.Clear();
                     cycles.Add(new Cycle() { Hi = hi, Lo = lo, Acc = optAcc, Sar = sar });
-                    ep = hi;
+                    ep = hi;                    
                 }
                 else
                 {
@@ -66,7 +70,7 @@ namespace MyTaLib
                 }
             }
 
-            return cycles.Last().Sar;
+            return sar;
         }
 
         private class Cycle
