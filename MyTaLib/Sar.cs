@@ -18,7 +18,7 @@ namespace MyTaLib
         {
             this.optAcc = optAcc;
             this.optMaxAxx = optMaxAxx;
-            this.maxCyclesNumber = maxCyclesNumber;
+            this.maxCyclesNumber = Math.Max(maxCyclesNumber, 2);
         }
 
         public void SetCycle0(double hi, double lo, double sar, double acc)
@@ -32,35 +32,37 @@ namespace MyTaLib
         {            
             Cycle prevCycle = cycles.Last();
             if (prevCycle.Sar < prevCycle.Lo)
-            {
-                ep = Math.Max(ep, prevCycle.Hi);
-                double sar = prevCycle.Sar + prevCycle.Acc * (ep - prevCycle.Sar);
+            {                
+                double sar = prevCycle.Sar + (prevCycle.Acc * (ep - prevCycle.Sar));
                 if (sar > lo)
                 {
                     // 上涨周期 =》 下跌周期
-                    sar = Math.Max(cycles.Max(o => o.Hi), hi);
+                    sar = Math.Max(Enumerable.Reverse(cycles).Take(maxCyclesNumber - 1).Max(o => o.Hi), hi);
                     cycles.Add(new Cycle() { Hi = hi, Lo = lo, Acc = optAcc, Sar = sar });
+                    ep = lo;
                 }
                 else
                 {
                     double acc = Math.Min(prevCycle.Acc + (hi > ep ? optAcc : 0.00d), optMaxAxx);
                     cycles.Add(new Cycle() { Hi = hi, Lo = lo, Acc = acc, Sar = sar });
-                }
+                    ep = Math.Max(ep, hi);
+                }                
             }
             else
             {
-                ep = Math.Min(ep, prevCycle.Lo);
-                double sar = prevCycle.Sar + prevCycle.Acc * (prevCycle.Lo - prevCycle.Sar);
+                double sar = prevCycle.Sar + (prevCycle.Acc * (ep - prevCycle.Sar));
                 if (sar < hi)
                 {
                     // 下跌周期 =》 上涨周期
-                    sar = Math.Max(cycles.Min(o => o.Lo), lo);
+                    sar = Math.Min(Enumerable.Reverse(cycles).Take(maxCyclesNumber - 1).Min(o => o.Lo), lo);
                     cycles.Add(new Cycle() { Hi = hi, Lo = lo, Acc = optAcc, Sar = sar });
+                    ep = hi;
                 }
                 else
                 {
-                    double acc = Math.Min(prevCycle.Acc + (lo > ep ? optAcc : 0.00d), optMaxAxx);
+                    double acc = Math.Min(prevCycle.Acc + (lo < ep ? optAcc : 0.00d), optMaxAxx);
                     cycles.Add(new Cycle() { Hi = hi, Lo = lo, Acc = acc, Sar = sar });
+                    ep = Math.Min(ep, lo);
                 }
             }
 
