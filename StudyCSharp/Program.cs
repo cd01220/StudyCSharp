@@ -24,7 +24,7 @@ using static TicTacTec.TA.Library.Core;
 namespace StudyCSharp
 {
     public class Program
-    {
+    { 
         private static void Main(string[] args)
         {
             Console.WriteLine("hellow world!");
