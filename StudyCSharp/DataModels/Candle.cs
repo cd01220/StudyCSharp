@@ -14,10 +14,5 @@ namespace StudyCSharp.DataModels
         public decimal LPrice { get; set; }
         public decimal CPrice { get; set; }
         public decimal Volume { get; set; }
-
-        public double Sar { get; set; }
-        public double Ema5  { get; set; }
-        public double Ema7  { get; set; }
-        public double Ema10 { get; set; }        
     }
 }

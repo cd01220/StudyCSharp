@@ -23,13 +23,13 @@ namespace Changes
         private const string FutureSegment = "api/futures/v3";
         private const string SwapSegment = "api/swap/v3";
 
-        public async Task<List<Candle>> GetCandlesAsync(string contractId, int granularity, DateTime? start, DateTime? end, CancellationToken token)
+        public async Task<IEnumerable<Candle>> GetCandlesAsync(string contractId, int granularity, DateTime? start, DateTime? end, CancellationToken token)
         {
             async Task<object> toTry() { return await GetCandlesImplAsync(contractId, granularity, start, end, token); }
             return (await Retry.RetryAsync(toTry, 5, token)) as List<Candle>;
         }
 
-        public async Task<List<Candle>> GetCandlesImplAsync(string contractId, int granularity, DateTime? start, DateTime? end, CancellationToken token)
+        public async Task<IEnumerable<Candle>> GetCandlesImplAsync(string contractId, int granularity, DateTime? start, DateTime? end, CancellationToken token)
         {
             string segment = contractId.IndexOf("SWAP") > 0 ? SwapSegment : FutureSegment;
             string url = $"{BaseUrl}/{segment}/instruments/{contractId}/candles";

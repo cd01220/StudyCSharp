@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Codes\DiagnosticPractices.cs" />
+    <Compile Include="Codes\EmaTrading.cs" />
     <Compile Include="DataModels\Candle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
