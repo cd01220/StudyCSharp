@@ -13,12 +13,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Changes;
-using Changes.ViewModels;
 using Mapster;
 using Microsoft.Reactive.Testing;
 using Microsoft.Win32.SafeHandles;
-using MyTaLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TicTacTec.TA.Library;
@@ -30,8 +27,7 @@ namespace StudyCSharp
     {
         private static void Main(string[] args)
         {
-            EmaTrading emaTrading = new EmaTrading();
-            emaTrading.Analyze();
+            Console.WriteLine("hellow world!");
         }
     }
 }

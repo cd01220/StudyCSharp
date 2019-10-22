@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Codes\DiagnosticPractices.cs" />
-    <Compile Include="Codes\EmaTrading.cs" />
     <Compile Include="DataModels\Candle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,16 +118,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Changes\Changes.csproj">
-      <Project>{587257d6-4f24-4bae-8a4e-7427d61f9ad2}</Project>
-      <Name>Changes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyTaLib\MyTaLib.csproj">
-      <Project>{9127dedc-b0ec-4590-bfa1-55b1e5ea8ebd}</Project>
-      <Name>MyTaLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
