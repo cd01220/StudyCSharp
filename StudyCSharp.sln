@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiInNetCore", "DiInNetCore\DiInNetCore.csproj", "{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {86A147CA-FE2D-44AD-BAEE-36CA79D37844}
+	EndGlobalSection
+EndGlobal

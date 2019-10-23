@@ -1,0 +1,11 @@
+D:\Project\StudyCSharp\DiInNetCore\bin\Debug\netcoreapp3.0\DiInNetCore.exe
+D:\Project\StudyCSharp\DiInNetCore\bin\Debug\netcoreapp3.0\DiInNetCore.deps.json
+D:\Project\StudyCSharp\DiInNetCore\bin\Debug\netcoreapp3.0\DiInNetCore.runtimeconfig.json
+D:\Project\StudyCSharp\DiInNetCore\bin\Debug\netcoreapp3.0\DiInNetCore.runtimeconfig.dev.json
+D:\Project\StudyCSharp\DiInNetCore\bin\Debug\netcoreapp3.0\DiInNetCore.dll
+D:\Project\StudyCSharp\DiInNetCore\bin\Debug\netcoreapp3.0\DiInNetCore.pdb
+D:\Project\StudyCSharp\DiInNetCore\obj\Debug\netcoreapp3.0\DiInNetCore.csprojAssemblyReference.cache
+D:\Project\StudyCSharp\DiInNetCore\obj\Debug\netcoreapp3.0\DiInNetCore.AssemblyInfoInputs.cache
+D:\Project\StudyCSharp\DiInNetCore\obj\Debug\netcoreapp3.0\DiInNetCore.AssemblyInfo.cs
+D:\Project\StudyCSharp\DiInNetCore\obj\Debug\netcoreapp3.0\DiInNetCore.dll
+D:\Project\StudyCSharp\DiInNetCore\obj\Debug\netcoreapp3.0\DiInNetCore.pdb
