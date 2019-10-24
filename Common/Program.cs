@@ -19,7 +19,7 @@ namespace Common
             var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Program>();
 
             logger.LogInformation("Starting application");
-            
+
             Console.WriteLine("Hello World!");
         }
     }
