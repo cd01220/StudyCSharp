@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project\\StudyCSharp\\Common\\Common.csproj": {}
+    "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj": {}
   },
   "projects": {
-    "D:\\Project\\StudyCSharp\\Common\\Common.csproj": {
+    "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project\\StudyCSharp\\Common\\Common.csproj",
+        "projectUniqueName": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "D:\\Project\\StudyCSharp\\Common\\Common.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\Project\\StudyCSharp\\Common\\obj\\",
+        "projectPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj",
+        "packagesPath": "C:\\Users\\10861\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\10861\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,6 +41,18 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
             "System.Diagnostics.EventLog": {
               "target": "Package",
               "version": "[4.6.0, )"
