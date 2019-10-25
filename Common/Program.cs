@@ -6,20 +6,8 @@ namespace Common
 {
     public class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
-            var serviceProvider = new ServiceCollection()
-            .AddLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddConsole();
-                loggingBuilder.AddDebug();
-            })
-            .BuildServiceProvider();
-
-            var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Program>();
-
-            logger.LogInformation("Starting application");
-
             Console.WriteLine("Hello World!");
         }
     }

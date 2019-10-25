@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj": {}
+    "D:\\Project\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj": {}
   },
   "projects": {
-    "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj": {
+    "D:\\Project\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
+        "projectUniqueName": "D:\\Project\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
         "projectName": "DiInNetCore",
-        "projectPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
-        "packagesPath": "C:\\Users\\10861\\.nuget\\packages\\",
-        "outputPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\obj\\",
+        "projectPath": "D:\\Project\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\StudyCSharp\\DiInNetCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\10861\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,6 +41,30 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.EnvironmentVariables": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.UserSecrets": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[3.0.0, )"
@@ -50,6 +74,10 @@
               "version": "[3.0.0, )"
             },
             "Microsoft.Extensions.Logging.Console": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
               "target": "Package",
               "version": "[3.0.0, )"
             }
