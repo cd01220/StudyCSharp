@@ -29,11 +29,6 @@ namespace DiInNetCore
         void DoThing(int number);
     }
 
-    public interface IBarService
-    {
-        void DoSomeRealWork();
-    }
-
     public class FooService : IFooService
     {
         private readonly ILogger<FooService> _logger;
@@ -60,10 +55,6 @@ namespace DiInNetCore
             ILogger logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger("Program");
             logger.LogInformation("Example log message");
 
-            IConfigurationRoot configuration = serviceProvider.GetService<IConfigurationRoot>();
-            MySettingsConfig mySettingsConfig = new MySettingsConfig();
-            configuration.GetSection("MySettings").Bind(mySettingsConfig);
-
             IFooService fooService = serviceProvider.GetService<IFooService>();
             fooService.DoThing(1);
             logger.LogInformation("Hello World!");
@@ -78,23 +69,24 @@ namespace DiInNetCore
                 .AddEnvironmentVariables();
             IConfigurationRoot configuration = builder.Build();
 
+            LogLevelSetting logLevelSetting = new LogLevelSetting();
+            configuration.GetSection("LogLevelSettings").Bind(logLevelSetting);
             // Add logging
             _ = services.AddLogging(builder =>
                 {
-                    _ = builder.AddFilter("DiInNetCore.Program", LogLevel.Debug)
-                               .AddFilter("DiInNetCore.FooService", LogLevel.Debug)
+                    _ = builder.AddFilter("Program", Enum.Parse<LogLevel>(logLevelSetting.Program))
+                               .AddFilter("DiInNetCore.FooService", Enum.Parse<LogLevel>(logLevelSetting.FooService))
                                .AddConsole()
                                .AddDebug();
                 })
                 .AddSingleton<IFooService, FooService>()
-                .AddSingleton(configuration);            
+                .AddSingleton(configuration);             
         }
 
-        public class MySettingsConfig
+        private class LogLevelSetting
         {
-            public string AccountName { get; set; }
-            public string ApiKey { get; set; }
-            public string ApiSecret { get; set; }
+            public string Program    { get; set; }
+            public string FooService { get; set; }
         }
     }
 }
