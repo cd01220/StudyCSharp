@@ -43,9 +43,9 @@ namespace DiInNetCore
         private static void Main()
         {
             // Create service collection
-            IServiceCollection services = new ServiceCollection();
-            ConfigureServices(services);
-            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            IServiceCollection serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
             ILogger logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger("Program");
             logger.LogInformation("Example log message");
