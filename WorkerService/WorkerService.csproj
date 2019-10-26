@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>dotnet-WorkerService-179EC265-84F9-4EB4-98CB-E70F934B0315</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0" />
+  </ItemGroup>
+</Project>

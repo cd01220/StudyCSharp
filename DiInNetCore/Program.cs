@@ -7,12 +7,7 @@ using Microsoft.Extensions.Logging;
 /*
  * 参考：
  *   https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.0
- *   https://blog.stephencleary.com/2018/05/microsoft-extensions-logging-part-1-introduction.html
- *   https://andrewlock.net/using-dependency-injection-in-a-net-core-console-application/
- *   
- *   Logging in .NET Core Console Applications(aslo with background task)
- *   https://blog.bitscry.com/2017/05/31/logging-in-net-core-console-applications/
- *   
+ *      
  *   Adding AppSettings.json Configuration to a .NET Core Console Application
  *   https://ballardsoftware.com/adding-appsettings-json-configuration-to-a-net-core-console-application/
  *   
@@ -31,15 +26,15 @@ namespace DiInNetCore
 
     public class FooService : IFooService
     {
-        private readonly ILogger<FooService> _logger;
+        private readonly ILogger<FooService> logger;
         public FooService(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<FooService>();
+            logger = loggerFactory.CreateLogger<FooService>();
         }
 
         public void DoThing(int number)
         {
-            _logger.LogInformation($"Doing the thing {number}");
+            logger.LogInformation($"Doing the thing {number}");
         }
     }
 

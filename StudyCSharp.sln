@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiInNetCore", "DiInNetCore\DiInNetCore.csproj", "{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiInNetCore", "DiInNetCore\DiInNetCore.csproj", "{A7B047F3-CF3B-48C1-94FD-D928A8768AAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerService", "WorkerService\WorkerService.csproj", "{F8BD2FF1-01F9-412A-8DBB-F2821258DF9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5D52A26-95FA-4FC0-803B-53359E7F1D5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8BD2FF1-01F9-412A-8DBB-F2821258DF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8BD2FF1-01F9-412A-8DBB-F2821258DF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8BD2FF1-01F9-412A-8DBB-F2821258DF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8BD2FF1-01F9-412A-8DBB-F2821258DF9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
