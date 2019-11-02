@@ -10,14 +10,11 @@
         "projectUniqueName": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj",
         "projectName": "Common",
         "projectPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj",
-        "packagesPath": "C:\\Users\\10861\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Howard\\.nuget\\packages\\",
         "outputPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\10861\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Howard\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
