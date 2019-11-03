@@ -39,9 +39,10 @@ namespace Common
 
         private static void Main()
         {
-            DateTime dateTime = DateTime.Parse("2019-12-27T09:00:00.000Z").ToUniversalTime();
-            DateTime result = GetNextQuarterlySettlingDateTime(dateTime);
-            Console.WriteLine("Hello World!");
+            DateTime dateTime = DateTime.Parse("2019-12-27T00:00:00.000Z").ToUniversalTime();
+            DateTime result0 = GetNextQuarterlySettlingDateTime(dateTime);
+            DateTime result1 = GetNextQuarterlySettlingDateTime(result0.AddDays(7));
+            Console.WriteLine(string.Format("{0:yyyy-MM-dd}, {1:yyyy-MM-dd}", result0, result1));
         }
     }
 }
