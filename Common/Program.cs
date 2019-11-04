@@ -28,10 +28,11 @@ namespace Common
 
             // 本月最后一天之前最近的一个星期五
             DateTime settlingDateTime = lastDayOfMonth.AddDays(0 - ((7 + (int)lastDayOfMonth.DayOfWeek - 5) % 7));
-            if (settlingDateTime < dateTime)
+            // AddDays(14) 是因为季度合约最后2周会切换成次周、本周合约。切换成次周合约的时候，新的季度合约已经上线了。
+            if (settlingDateTime < dateTime.AddDays(14))
             {
                 // settlingDateTime 的合约已经交割，取下一季交割合约的日期。
-                settlingDateTime = GetNextQuarterlySettlingDateTime(dateTime.AddDays(7));
+                settlingDateTime = GetNextQuarterlySettlingDateTime(dateTime.AddDays(14));
             }
 
             return settlingDateTime;
@@ -39,10 +40,13 @@ namespace Common
 
         private static void Main()
         {
-            DateTime dateTime = DateTime.Parse("2019-12-27T00:00:00.000Z").ToUniversalTime();
-            DateTime result0 = GetNextQuarterlySettlingDateTime(dateTime);
-            DateTime result1 = GetNextQuarterlySettlingDateTime(result0.AddDays(7));
-            Console.WriteLine(string.Format("{0:yyyy-MM-dd}, {1:yyyy-MM-dd}", result0, result1));
+            DateTime dateTime = DateTime.Parse("2019-12-13T07:00:00.000Z").ToUniversalTime();
+            DateTime result = GetNextQuarterlySettlingDateTime(dateTime);
+            Console.WriteLine(string.Format("{0:yyyy-MM-dd}", result));
+
+            dateTime = DateTime.Parse("2019-12-13T09:00:00.000Z").ToUniversalTime();
+            result = GetNextQuarterlySettlingDateTime(dateTime);
+            Console.WriteLine(string.Format("{0:yyyy-MM-dd}", result));
         }
     }
 }
