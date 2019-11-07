@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj": {}
+    "D:\\Project\\StudyCSharp\\Common\\Common.csproj": {}
   },
   "projects": {
-    "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj": {
+    "D:\\Project\\StudyCSharp\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj",
+        "projectUniqueName": "D:\\Project\\StudyCSharp\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\Common.csproj",
-        "packagesPath": "C:\\Users\\Howard\\.nuget\\packages\\",
-        "outputPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\Common\\obj\\",
+        "projectPath": "D:\\Project\\StudyCSharp\\Common\\Common.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\StudyCSharp\\Common\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Howard\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

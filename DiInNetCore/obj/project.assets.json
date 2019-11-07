@@ -564,19 +564,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Howard\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
+      "projectUniqueName": "D:\\Project\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
       "projectName": "DiInNetCore",
-      "projectPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
-      "packagesPath": "C:\\Users\\Howard\\.nuget\\packages\\",
-      "outputPath": "D:\\Project\\Project.Vs2017\\StudyCSharp\\DiInNetCore\\obj\\",
+      "projectPath": "D:\\Project\\StudyCSharp\\DiInNetCore\\DiInNetCore.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "D:\\Project\\StudyCSharp\\DiInNetCore\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Howard\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
